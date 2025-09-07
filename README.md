@@ -57,7 +57,7 @@ O projeto segue a arquitetura em camadas, o que garante a separação de respons
 
 ### Pré-requisitos
 
-* Java 17 ou superior
+* Java 24 ou superior
 * Maven
 * Banco de dados PostgreSQL
 * Um editor de código (VS Code, IntelliJ IDEA, Eclipse)
