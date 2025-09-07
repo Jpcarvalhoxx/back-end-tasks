@@ -1,3 +1,9 @@
+
+
+# Ignora o arquivo de variáveis de ambiente
+application-dev.properties
+
+
 HELP.md
 target/
 .mvn/wrapper/maven-wrapper.jar

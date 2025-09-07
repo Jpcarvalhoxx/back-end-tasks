@@ -26,12 +26,6 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<UserResponseDTO> getUserById(@PathVariable Long id) {
         UserResponseDTO userResponseDTO = userService.getUserById(id);
-
-        if (userResponseDTO == null) {
-            // Retorna 404 Not Found se o usuário não for encontrado
-            return ResponseEntity.notFound().build();
-        }
-
         // Retorna 200 OK e o corpo da resposta
         return ResponseEntity.ok(userResponseDTO);
     }
