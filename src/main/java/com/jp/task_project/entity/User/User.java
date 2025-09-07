@@ -2,12 +2,14 @@ package com.jp.task_project.entity.User;
 
 
 import com.jp.task_project.entity.Task.Task;
-import jakarta.persistence.*;
+import jakarta.persistence.*;import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
 
+@NoArgsConstructor
 @Entity
 @Getter
 @Setter
@@ -30,4 +32,11 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Task> tasks;
+
+
+    public User(String name, String email, String password){
+        this.name = name;
+        this.email =email;
+        this.password = password;
+    }
 }
