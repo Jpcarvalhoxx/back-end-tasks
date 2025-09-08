@@ -8,7 +8,7 @@ Este projeto é uma API RESTful para um sistema de gerenciamento de tarefas, con
 
 O projeto foi desenvolvido com as seguintes tecnologias e frameworks:
 
-* **Java 17**: Linguagem de programação principal.
+* **Java 24.0.2**: Linguagem de programação principal.
 * **Spring Boot**: Framework para simplificar a criação da API.
 * **Spring Data JPA**: Para a camada de persistência de dados.
 * **PostgreSQL**: Sistema de gerenciamento de banco de dados relacional.
@@ -57,7 +57,7 @@ O projeto segue a arquitetura em camadas, o que garante a separação de respons
 
 ### Pré-requisitos
 
-* Java 24 ou superior
+* Java 24.0.2 ou superior
 * Maven
 * Banco de dados PostgreSQL
 * Um editor de código (VS Code, IntelliJ IDEA, Eclipse)
