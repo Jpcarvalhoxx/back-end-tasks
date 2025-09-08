@@ -8,19 +8,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
-public record UserResponseDTO (
-     Long id_user,
-     String name,
-     String email
+public record UserResponseDTO(Long id_user, String name, String email
 
 
-){
+) {
     public static UserResponseDTO from(User user) {
-        return new UserResponseDTO(
-                user.getId(),
-                user.getName(),
-                user.getEmail()
-        );
+        return new UserResponseDTO(user.getId(), user.getName(), user.getEmail());
     }
 
 

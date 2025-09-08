@@ -2,6 +2,7 @@ package com.jp.task_project.controller;
 
 
 import com.jp.task_project.dto.Users.UserRequestCreateDTO;
+import com.jp.task_project.dto.Users.UserRequestLoginDTO;
 import com.jp.task_project.dto.Users.UserResponseDTO;
 import com.jp.task_project.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,17 +18,18 @@ public class UserController {
     private UserService userService;
 
 
-    @PostMapping("/create")
-    public ResponseEntity<UserResponseDTO> createUser(@RequestBody UserRequestCreateDTO user_dto){
-        UserResponseDTO userResponseDTO = userService.registerUserInBD(user_dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(userResponseDTO);
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<UserResponseDTO> getUserById(@PathVariable Long id) {
         UserResponseDTO userResponseDTO = userService.getUserById(id);
         // Retorna 200 OK e o corpo da resposta
         return ResponseEntity.ok(userResponseDTO);
+    }
+
+    @DeleteMapping("/{id}/delete")
+    public ResponseEntity<Void> deleteUserById(@PathVariable Long id){
+
+        userService.deleteUser(id);
+        return ResponseEntity.noContent().build();
     }
 
 
