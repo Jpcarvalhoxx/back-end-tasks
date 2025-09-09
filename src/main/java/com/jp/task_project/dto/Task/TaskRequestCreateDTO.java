@@ -17,7 +17,6 @@ public record TaskRequestCreateDTO (
         String description,
         TaskStatus status,
         TaskType type
-
 ){
 
     public static Task convertToTask(TaskRequestCreateDTO t, User u){

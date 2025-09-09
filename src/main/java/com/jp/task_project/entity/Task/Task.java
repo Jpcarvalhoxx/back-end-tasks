@@ -61,4 +61,13 @@ public class Task {
         this.type = type;
         this.user = user;
     }
+
+    public Task(String title, String description, TaskStatus status,
+                TaskType type) {
+        this.title = title;
+        this.description = description;
+        this.status = status;
+        this.type = type;
+
+    }
 }

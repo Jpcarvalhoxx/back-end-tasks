@@ -8,7 +8,7 @@ public record UserRequestCreateDTO(String name, String email, String pass) {
         return new User(u.name, u.email, encryptedPassword);
     }
 
-    ;
+
 
 
 }

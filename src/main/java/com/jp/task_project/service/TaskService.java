@@ -1,6 +1,7 @@
 package com.jp.task_project.service;
 
 import com.jp.task_project.dto.Task.TaskRequestCreateDTO;
+import com.jp.task_project.dto.Task.TaskRequestUpdateDTO;
 import com.jp.task_project.dto.Task.TaskResponseDTO;
 import com.jp.task_project.entity.Task.Task;
 import com.jp.task_project.entity.User.User;
@@ -37,6 +38,53 @@ public class TaskService {
         return TaskResponseDTO.from(t);
 
     }
+
+    @Transactional
+    public TaskResponseDTO updatePutTaskInBd(TaskRequestUpdateDTO taskRequestUpdateDTO, Long taskId){
+
+        Task t = taskRepository.findById(taskId).orElseThrow(() ->
+                new TaskNotFoundException("Task not found: "+taskId ));
+
+        t.setTitle(taskRequestUpdateDTO.title());
+        t.setDescription(taskRequestUpdateDTO.description());
+        t.setType(taskRequestUpdateDTO.type());
+        t.setStatus(taskRequestUpdateDTO.status());
+
+        taskRepository.save(t);
+
+        return TaskResponseDTO.from(t);
+
+    }
+
+    @Transactional
+    public TaskResponseDTO updatePatchTaskInBd(TaskRequestUpdateDTO taskRequestUpdateDTO, Long taskId){
+
+        Task t = taskRepository.findById(taskId).orElseThrow(() ->
+                new TaskNotFoundException("Task not found: "+taskId ));
+
+        if (taskRequestUpdateDTO.title()!=null){
+            t.setTitle(taskRequestUpdateDTO.title());
+        }
+
+        if (taskRequestUpdateDTO.description()!=null){
+            t.setDescription(taskRequestUpdateDTO.description());
+        }
+
+        if (taskRequestUpdateDTO.status() !=null){
+            t.setStatus(taskRequestUpdateDTO.status());
+        }
+
+        if (taskRequestUpdateDTO.type()!=null){
+            t.setType(taskRequestUpdateDTO.type());
+        }
+
+        taskRepository.save(t);
+
+        return TaskResponseDTO.from(t);
+
+    }
+
+
 
     public List<TaskResponseDTO> getAllTaksByUser(Long userId) {
         // Verifica se o usuário existe

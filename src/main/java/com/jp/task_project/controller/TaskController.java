@@ -1,6 +1,7 @@
 package com.jp.task_project.controller;
 
 import com.jp.task_project.dto.Task.TaskRequestCreateDTO;
+import com.jp.task_project.dto.Task.TaskRequestUpdateDTO;
 import com.jp.task_project.dto.Task.TaskResponseDTO;
 import com.jp.task_project.service.TaskService;
 
@@ -47,6 +48,22 @@ public class TaskController {
     public ResponseEntity<Void> deleteTask(@PathVariable("id") Long id){
         taskService.deleteTaskById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping ("/{id}/update")
+    public ResponseEntity<TaskResponseDTO> updatePatchTask(@PathVariable("id")TaskRequestUpdateDTO
+                                                    taskRequestUpdateDTO, Long taskId){
+        TaskResponseDTO t = taskService.updatePatchTaskInBd(taskRequestUpdateDTO,taskId);
+        return ResponseEntity.ok(t);
+
+    }
+
+    @PutMapping ("/{id}/update")
+    public ResponseEntity<TaskResponseDTO> updatePutTask(@PathVariable("id")TaskRequestUpdateDTO
+                                                              taskRequestUpdateDTO, Long taskId){
+        TaskResponseDTO t = taskService.updatePutTaskInBd(taskRequestUpdateDTO,taskId);
+        return ResponseEntity.ok(t);
+
     }
 
 

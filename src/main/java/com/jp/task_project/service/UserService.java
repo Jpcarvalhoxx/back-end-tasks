@@ -42,7 +42,26 @@ public class UserService {
 
 
     @Transactional
-    public UserResponseDTO updateUserInBD(Long id, UserRequestUpdateDTO userRequestUpdateDTO) {
+    public UserResponseDTO updateUserPutInBD(Long id, UserRequestUpdateDTO userRequestUpdateDTO) {
+
+
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("Usuário não encontrado com id: " + id));
+
+
+            user.setName(userRequestUpdateDTO.name());
+            user.setEmail(userRequestUpdateDTO.email());
+            user.setPassword(passwordEncoder.encode(userRequestUpdateDTO.pass()));
+
+        userRepository.save(user);
+
+        return UserResponseDTO.from(user);
+    }
+
+
+
+    @Transactional
+    public UserResponseDTO updatePatchUserInBD(Long id, UserRequestUpdateDTO userRequestUpdateDTO) {
 
 
         User user = userRepository.findById(id)

@@ -17,6 +17,6 @@ public record UserResponseDTO(Long id_user, String name, String email
     }
 
 
-};
+}
 
 

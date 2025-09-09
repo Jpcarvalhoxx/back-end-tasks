@@ -35,13 +35,24 @@ public class UserController {
 
 
     @PutMapping("/{id}/update")
-    public ResponseEntity<UserResponseDTO> updateUser(
+    public ResponseEntity<UserResponseDTO> updatePutUser(
             @PathVariable("id") Long id,
             @RequestBody UserRequestUpdateDTO taskRequest) {
-        System.out.println("kdqoqwdkpqwdkp");
-       UserResponseDTO userResponseDTO = userService.updateUserInBD(id,taskRequest);
+
+       UserResponseDTO userResponseDTO = userService.updateUserPutInBD(id,taskRequest);
        return ResponseEntity.ok(userResponseDTO);
     }
+
+
+    @PatchMapping("/{id}/update")
+    public ResponseEntity<UserResponseDTO> updatePatchUser(
+            @PathVariable("id") Long id,
+            @RequestBody UserRequestUpdateDTO taskRequest) {
+
+        UserResponseDTO userResponseDTO = userService.updatePatchUserInBD(id,taskRequest);
+        return ResponseEntity.ok(userResponseDTO);
+    }
+
 
 
 
