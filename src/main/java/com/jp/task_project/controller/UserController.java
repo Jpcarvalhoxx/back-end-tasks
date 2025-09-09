@@ -3,6 +3,7 @@ package com.jp.task_project.controller;
 
 import com.jp.task_project.dto.Users.UserRequestCreateDTO;
 import com.jp.task_project.dto.Users.UserRequestLoginDTO;
+import com.jp.task_project.dto.Users.UserRequestUpdateDTO;
 import com.jp.task_project.dto.Users.UserResponseDTO;
 import com.jp.task_project.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +27,20 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}/delete")
-    public ResponseEntity<Void> deleteUserById(@PathVariable Long id){
+    public ResponseEntity<Void> deleteUserById(@PathVariable("id") Long id){
 
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
+    }
+
+
+    @PutMapping("/{id}/update")
+    public ResponseEntity<UserResponseDTO> updateUser(
+            @PathVariable("id") Long id,
+            @RequestBody UserRequestUpdateDTO taskRequest) {
+        System.out.println("kdqoqwdkpqwdkp");
+       UserResponseDTO userResponseDTO = userService.updateUserInBD(id,taskRequest);
+       return ResponseEntity.ok(userResponseDTO);
     }
 
 

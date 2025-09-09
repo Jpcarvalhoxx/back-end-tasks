@@ -1,4 +1,4 @@
-package com.jp.task_project.dto.Users.errors;
+package com.jp.task_project.dto.errors;
 
 import java.time.LocalDateTime;
 import java.util.List;

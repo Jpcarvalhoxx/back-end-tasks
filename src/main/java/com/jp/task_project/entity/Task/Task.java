@@ -1,9 +1,11 @@
 package com.jp.task_project.entity.Task;
+
 import com.jp.task_project.entity.User.User;
 import com.jp.task_project.utils.enums.TaskStatus;
 import com.jp.task_project.utils.enums.TaskType;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -14,6 +16,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 @Table(name = "tasks")
 @EntityListeners(AuditingEntityListener.class)
 public class Task {
@@ -49,4 +52,13 @@ public class Task {
     @ManyToOne
     @JoinColumn(name = "id_user") // Relacionamento com a entidade User
     private User user;
+
+    public Task(String title, String description, TaskStatus status,
+                TaskType type, User user) {
+        this.title = title;
+        this.description = description;
+        this.status = status;
+        this.type = type;
+        this.user = user;
+    }
 }

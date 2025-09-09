@@ -1,7 +1,6 @@
 package com.jp.task_project.exeception;
 
-import com.jp.task_project.dto.Users.errors.ErrorResponseDTO;
-import org.springframework.cglib.core.Local;
+import com.jp.task_project.dto.errors.ErrorResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -45,6 +44,17 @@ public class GlobalExceptionHandler {
                 List.of()
         );
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+    }
+
+    @ExceptionHandler(TaskNotFoundException.class)
+    public ResponseEntity<ErrorResponseDTO> handleUserNotFound(TaskNotFoundException ex) {
+        ErrorResponseDTO errorResponse = new ErrorResponseDTO(
+                ex.getMessage(),
+                HttpStatus.NOT_FOUND.value(),
+                LocalDateTime.now(),
+                List.of()
+        );
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
 }

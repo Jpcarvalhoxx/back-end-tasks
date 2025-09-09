@@ -1,5 +1,7 @@
 package com.jp.task_project.dto.Task;
 
+import com.jp.task_project.entity.Task.Task;
+import com.jp.task_project.entity.User.User;
 import com.jp.task_project.utils.enums.TaskStatus;
 import com.jp.task_project.utils.enums.TaskType;
 import lombok.AllArgsConstructor;
@@ -9,18 +11,16 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+public record TaskRequestCreateDTO (
+        Long userId,
+        String title,
+        String description,
+        TaskStatus status,
+        TaskType type
 
-public class TaskRequestCreateDTO {
+){
 
-    private Long userId;
-    private String title;
-    private String description;
-    private TaskStatus status;
-    private TaskType type;
-    private LocalDateTime createdAt;
-    private LocalDateTime endAt;
+    public static Task convertToTask(TaskRequestCreateDTO t, User u){
+        return new Task(t.title,t.description,t.status,t.type,u);
+    }
 }
