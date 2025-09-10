@@ -21,20 +21,4 @@ public record TaskResponseDTO (
      LocalDateTime createdAt,
      LocalDateTime endAt
 ){
-
-
-    public static TaskResponseDTO from(Task task) {
-        return new TaskResponseDTO(
-                task.getId(),
-                task.getUser().getId(),
-                task.getTitle(),
-                task.getDescription(),
-                task.getStatus(),
-                task.getType(),
-                task.getCreatedAt(),
-                task.getEndAt()
-        );
-    }
-
-
 }

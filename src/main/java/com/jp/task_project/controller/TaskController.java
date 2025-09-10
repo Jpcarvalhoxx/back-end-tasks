@@ -51,16 +51,19 @@ public class TaskController {
     }
 
     @PatchMapping ("/{id}/update")
-    public ResponseEntity<TaskResponseDTO> updatePatchTask(@PathVariable("id")TaskRequestUpdateDTO
-                                                    taskRequestUpdateDTO, Long taskId){
+    public ResponseEntity<TaskResponseDTO> updatePatchTask(@PathVariable("id") Long taskId,@RequestBody  TaskRequestUpdateDTO
+            taskRequestUpdateDTO){
         TaskResponseDTO t = taskService.updatePatchTaskInBd(taskRequestUpdateDTO,taskId);
         return ResponseEntity.ok(t);
 
     }
 
     @PutMapping ("/{id}/update")
-    public ResponseEntity<TaskResponseDTO> updatePutTask(@PathVariable("id")TaskRequestUpdateDTO
-                                                              taskRequestUpdateDTO, Long taskId){
+    public ResponseEntity<TaskResponseDTO> updatePutTask(@PathVariable("id") Long taskId,@RequestBody  TaskRequestUpdateDTO
+                                                              taskRequestUpdateDTO){
+
+
+        System.out.println("2aqwpdkqwpdk");
         TaskResponseDTO t = taskService.updatePutTaskInBd(taskRequestUpdateDTO,taskId);
         return ResponseEntity.ok(t);
 

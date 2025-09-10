@@ -19,7 +19,4 @@ public record TaskRequestCreateDTO (
         TaskType type
 ){
 
-    public static Task convertToTask(TaskRequestCreateDTO t, User u){
-        return new Task(t.title,t.description,t.status,t.type,u);
-    }
 }

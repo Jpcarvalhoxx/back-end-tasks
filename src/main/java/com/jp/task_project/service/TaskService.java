@@ -7,6 +7,7 @@ import com.jp.task_project.entity.Task.Task;
 import com.jp.task_project.entity.User.User;
 import com.jp.task_project.exeception.TaskNotFoundException;
 import com.jp.task_project.exeception.UserNotFoundException;
+import com.jp.task_project.mapper.TaskMapper;
 import com.jp.task_project.repository.TaskRepository;
 import com.jp.task_project.repository.UserRepository;
 
@@ -26,16 +27,23 @@ public class TaskService {
     @Autowired
     private TaskRepository taskRepository;
 
+
+    private final TaskMapper taskMapper;
+
+    public TaskService (TaskMapper taskMapper){
+        this.taskMapper = taskMapper;
+    }
+
     @Transactional
     public TaskResponseDTO registerTaskInBD(TaskRequestCreateDTO taskRequest){
 
         User u = userRepository.findById(taskRequest.userId()).orElseThrow(() ->
                 new UserNotFoundException("Usuário não encontrado com id: " + taskRequest.userId()));
-        Task t = TaskRequestCreateDTO.convertToTask(taskRequest,u);
-
+            Task t = taskMapper.toCreateTask(taskRequest);
+            t.setUser(u);
         t = taskRepository.save(t);
 
-        return TaskResponseDTO.from(t);
+        return  taskMapper.toDto(t);
 
     }
 
@@ -45,14 +53,14 @@ public class TaskService {
         Task t = taskRepository.findById(taskId).orElseThrow(() ->
                 new TaskNotFoundException("Task not found: "+taskId ));
 
-        t.setTitle(taskRequestUpdateDTO.title());
-        t.setDescription(taskRequestUpdateDTO.description());
-        t.setType(taskRequestUpdateDTO.type());
-        t.setStatus(taskRequestUpdateDTO.status());
+       taskMapper.toUpdateTask(taskRequestUpdateDTO,t);
+
+
+        System.out.println(t.toString());
 
         taskRepository.save(t);
 
-        return TaskResponseDTO.from(t);
+        return taskMapper.toDto(t);
 
     }
 
@@ -62,25 +70,11 @@ public class TaskService {
         Task t = taskRepository.findById(taskId).orElseThrow(() ->
                 new TaskNotFoundException("Task not found: "+taskId ));
 
-        if (taskRequestUpdateDTO.title()!=null){
-            t.setTitle(taskRequestUpdateDTO.title());
-        }
-
-        if (taskRequestUpdateDTO.description()!=null){
-            t.setDescription(taskRequestUpdateDTO.description());
-        }
-
-        if (taskRequestUpdateDTO.status() !=null){
-            t.setStatus(taskRequestUpdateDTO.status());
-        }
-
-        if (taskRequestUpdateDTO.type()!=null){
-            t.setType(taskRequestUpdateDTO.type());
-        }
+        taskMapper.partialUpdate(taskRequestUpdateDTO,t);
 
         taskRepository.save(t);
 
-        return TaskResponseDTO.from(t);
+        return taskMapper.toDto(t);
 
     }
 
@@ -95,15 +89,13 @@ public class TaskService {
         List<Task> tasks = taskRepository.findByUser_Id(userId);
 
         // Converte cada Task para TaskResponseDTO
-        return tasks.stream()
-                .map(TaskResponseDTO::from)
-                .toList();
+        return taskMapper.toDtoList(tasks);
     }
 
     public TaskResponseDTO getTaskById(Long taskId){
         Task task  = taskRepository.findById(taskId)
                 .orElseThrow(()->new TaskNotFoundException("Task not found"));
-        return TaskResponseDTO.from(task);
+        return taskMapper.toDto(task);
 
     }
     @Transactional

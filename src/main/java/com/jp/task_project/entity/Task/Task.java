@@ -70,4 +70,18 @@ public class Task {
         this.type = type;
 
     }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", status=" + status +
+                ", type=" + type +
+                ", createdAt=" + createdAt +
+                ", endAt=" + endAt +
+                ", user=" + user +
+                '}';
+    }
 }

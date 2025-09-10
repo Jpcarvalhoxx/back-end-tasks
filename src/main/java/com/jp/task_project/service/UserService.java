@@ -9,6 +9,7 @@ import com.jp.task_project.entity.User.User;
 import com.jp.task_project.exeception.EmailAlreadyExistsException;
 import com.jp.task_project.exeception.UserNotFoundException;
 import com.jp.task_project.exeception.UserNotLoginException;
+import com.jp.task_project.mapper.UserMapper;
 import com.jp.task_project.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,22 +22,30 @@ import java.util.Optional;
 @Service
 public class UserService {
 
+    private final UserMapper userMapper;
+
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    public UserService(UserMapper userMapper) {
+        this.userMapper = userMapper;
+    }
     @Autowired
     private UserRepository userRepository;
 
     public UserResponseDTO registerUserInBD(UserRequestCreateDTO user_dto) {
         String encryptedPassword = passwordEncoder.encode(user_dto.pass());
-        User u = UserRequestCreateDTO.convertToUser(user_dto, encryptedPassword);
 
-        if (userRepository.existsByEmail(u.getEmail())) {
+        User user = userMapper.toUserCreate(user_dto);
+        user.setPassword(encryptedPassword);
+
+        if (userRepository.existsByEmail(user.getEmail())) {
             throw new EmailAlreadyExistsException("Email exists");
         }
 
-        u = userRepository.save(u);
-        return UserResponseDTO.from(u);
+        user = userRepository.save(user);
+        return userMapper.toDto(user);
 
     }
 
@@ -48,14 +57,13 @@ public class UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("Usuário não encontrado com id: " + id));
 
+           user.setPassword(passwordEncoder.encode(userRequestUpdateDTO.pass()));
+           userMapper.toUserUpdate(userRequestUpdateDTO,user);
 
-            user.setName(userRequestUpdateDTO.name());
-            user.setEmail(userRequestUpdateDTO.email());
-            user.setPassword(passwordEncoder.encode(userRequestUpdateDTO.pass()));
 
         userRepository.save(user);
 
-        return UserResponseDTO.from(user);
+        return userMapper.toDto(user);
     }
 
 
@@ -67,27 +75,16 @@ public class UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("Usuário não encontrado com id: " + id));
 
-        if (userRequestUpdateDTO.name() != null) {
-            user.setName(userRequestUpdateDTO.name());
-        }
-
-        if (userRequestUpdateDTO.email() != null) {
-            user.setEmail(userRequestUpdateDTO.email());
-        }
-
-
-        if (userRequestUpdateDTO.pass() != null) {
-            user.setPassword(passwordEncoder.encode(userRequestUpdateDTO.pass()));
-        }
+        userMapper.partialUpdate(userRequestUpdateDTO,user);
 
         userRepository.save(user);
 
-        return UserResponseDTO.from(user);
+        return userMapper.toDto(user);
     }
 
     public UserResponseDTO getUserById(Long id) {
         User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("Usuário not found with: " + id));
-        return UserResponseDTO.from(user);
+        return userMapper.toDto(user);
     }
 
     public void deleteUser(Long id) {
@@ -102,7 +99,7 @@ public class UserService {
 
         if (passwordEncoder.matches(u.pass(), user.getPassword())) {
             // Se as senhas correspondem, retorna o DTO de sucesso
-            return UserResponseDTO.from(user);
+            return userMapper.toDto(user);
         } else {
             // Se as senhas não correspondem, lança uma exceção
             throw new UserNotLoginException("Credenciais de login inválidas");
