@@ -1,12 +1,14 @@
 package com.jp.task_project.entity.User;
 
 
+import com.jp.task_project.entity.Role.Role;
 import com.jp.task_project.entity.Task.Task;
 import jakarta.persistence.*;import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Collection;
 import java.util.List;
 
 @NoArgsConstructor
@@ -32,6 +34,15 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Task> tasks;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(
+                    name = "user_id", referencedColumnName = "id_user"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "role_id", referencedColumnName = "id_role"))
+    private Collection<Role> roles;
 
 
     public User(String name, String email, String password){

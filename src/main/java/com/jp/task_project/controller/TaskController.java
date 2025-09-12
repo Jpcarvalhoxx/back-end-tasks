@@ -37,8 +37,10 @@ public class TaskController {
 
     }
 
-    @PostMapping("/create")
+    @PostMapping("/{id}/create")
     public  ResponseEntity<TaskResponseDTO> getTask(@RequestBody TaskRequestCreateDTO taskRequestCreateDTO){
+
+        System.out.println(taskRequestCreateDTO.userId());
         TaskResponseDTO t = taskService.registerTaskInBD(taskRequestCreateDTO);
         return ResponseEntity.ok(t);
 
@@ -61,9 +63,6 @@ public class TaskController {
     @PutMapping ("/{id}/update")
     public ResponseEntity<TaskResponseDTO> updatePutTask(@PathVariable("id") Long taskId,@RequestBody  TaskRequestUpdateDTO
                                                               taskRequestUpdateDTO){
-
-
-        System.out.println("2aqwpdkqwpdk");
         TaskResponseDTO t = taskService.updatePutTaskInBd(taskRequestUpdateDTO,taskId);
         return ResponseEntity.ok(t);
 
