@@ -57,6 +57,30 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
+    @ExceptionHandler(ImageNotFoundException.class)
+    public ResponseEntity<ErrorResponseDTO> handleUserNotFound(ImageNotFoundException ex) {
+        ErrorResponseDTO errorResponse = new ErrorResponseDTO(
+                ex.getMessage(),
+                HttpStatus.NOT_FOUND.value(),
+                LocalDateTime.now(),
+                List.of()
+        );
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+    }
+
+            @ExceptionHandler(CloudinaryUploadService.class)
+    public ResponseEntity<ErrorResponseDTO> handleUserNotFound(CloudinaryUploadService ex) {
+                ErrorResponseDTO errorResponse = new ErrorResponseDTO(
+                        "Falha ao enviar imagem para o Cloudinary: " + ex.getMessage(),
+                        HttpStatus.SERVICE_UNAVAILABLE.value(),
+                        LocalDateTime.now(),
+                        List.of()
+                );
+
+                return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(errorResponse);
+    }
+
+
 }
 
 

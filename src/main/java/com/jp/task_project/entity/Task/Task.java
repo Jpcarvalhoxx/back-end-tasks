@@ -1,5 +1,7 @@
 package com.jp.task_project.entity.Task;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.jp.task_project.entity.Image.Image;
 import com.jp.task_project.entity.User.User;
 import com.jp.task_project.utils.enums.TaskStatus;
 import com.jp.task_project.utils.enums.TaskType;
@@ -12,6 +14,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -48,6 +51,11 @@ public class Task {
     @LastModifiedDate
     @Column(name = "end_at")
     private LocalDateTime endAt;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<Image>imgs;
+
 
     @ManyToOne
     @JoinColumn(name = "id_user") // Relacionamento com a entidade User
